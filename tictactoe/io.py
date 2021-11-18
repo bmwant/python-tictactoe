@@ -20,25 +20,28 @@ class IOFrontend(ABC):
 
 
 class ConsoleFrontend(IOFrontend):
+    placeholders = ['①', '②', '③', '④', '⑤', '⑥', '⑦', '⑧', '⑨']
+
     def print_board(self, board):
         for i, row in enumerate(board):
             for j, column in enumerate(row):
-                if (cell := board[i][j]) != Cell.EMPTY:
-                    print(cell.value, end="|")
+                if (cell := board[i][j]) == Cell.X:  # Python 3.8+
+                    print('❌', end='┃')
+                elif cell == Cell.O:
+                    print('🔵', end='┃')
                 else:
-                    cell_number = i * len(row) + j + 1
-                    print(cell_number, end="|")
+                    print(self.placeholders[i * len(row) + j], end=' ┃')
             print()
         print()
 
     def print_winner(self, name=None):
         if name is None:
-            print("Game is a draw!")
+            print('🌼 It is a draw! 🌼')
         else:
-            print(f"Player {name} wins!")
+            print(f'🎉 Player {name} wins! 🎉')
 
     def get_input(self):
-        return input("Enter a number of the cell: ")
+        return input('Enter a number of the cell: ')
 
 
 class TableConsoleFrontend(IOFrontend):
@@ -49,8 +52,8 @@ class TableConsoleFrontend(IOFrontend):
             table_row = []
             for j, column in enumerate(row):
                 if (cell := board[i][j]) != Cell.EMPTY:
-                    text = click.style(cell.value, fg="red", bold=True)
-                    color = "red" if cell == Cell.X else "blue"
+                    text = click.style(cell.value, fg='red', bold=True)
+                    color = 'red' if cell == Cell.X else 'blue'
                     text = click.style(cell.value, fg=color, bold=True)
                 else:
                     text = str(i * len(row) + j + 1)
@@ -64,9 +67,9 @@ class TableConsoleFrontend(IOFrontend):
 
     def print_winner(self, name=None):
         if name is not None:
-            click.secho(f"{name} is a winner!", fg="black", bg="green")
+            click.secho(f'{name} is a winner!', fg='black', bg='green')
         else:
-            click.secho("A draw on the board!", fg="black", bg="cyan")
+            click.secho('A draw is on the board!', fg='black', bg='cyan')
 
     def get_input(self):
-        return input("Enter a number of the cell: ")
+        return input('Enter a number of the cell: ')

@@ -42,7 +42,7 @@ class RandomPlayer(Player):
 
 
 class ConsolePlayer(Player):
-    def __init__(self, name="Console Player"):
+    def __init__(self, name='Console Player'):
         frontend = ConsoleFrontend()
         super().__init__(name=name, frontend=frontend)
 
